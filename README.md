@@ -37,6 +37,7 @@
 | `tdd-workflow-nestjs` | NestJS 專案的 TDD 工作流程，要求 80%+ 覆蓋率，涵蓋 unit、integration 與 E2E 測試 |
 | `vue-testing-best-practices` | Vue.js 測試實務，涵蓋 Vitest、Vue Test Utils、元件測試、mocking 與 Playwright E2E |
 | `sync-branch-to-develop` | 在同時維護 main 與 develop 兩條長期線的專案，以 cherry-pick 把開發分支搬到另一條線的同名分支，並用 `range-diff` 驗證一致 |
+| `git-worktree` | 互動式建立、列出、刪除 git worktree 與本地分支，每個決策點逐一詢問並確認指令後才執行；僅限手動觸發 `/git-worktree` |
 
 #### 框架與語言慣例
 
