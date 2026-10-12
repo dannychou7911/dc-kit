@@ -144,11 +144,30 @@ git diff --stat <來源分支> dev/<來源分支>
 
 告訴使用者：搬了幾個 commit、`range-diff` 的結論、樹狀比對是否只剩線差、以及有哪些差異屬於可接受的線差。
 
-**不要自動 push**，除非使用者明確要求。把指令給他自己執行：
+**不要自動 push**，除非使用者明確要求。把下面的指令給使用者自己執行。
+
+本地的 `dev/` 分支不會以同名推上遠端，而是強推到遠端的**來源分支同名分支**，用它向整合線提 MR。整合線的 MR 合併後（不刪來源分支），再把本地來源分支強推回同一個遠端分支，向穩定線提 MR。所以這個遠端分支會被強推兩次，每次都要先確認不會蓋掉別人的 commit：
 
 ```bash
-git push -u origin dev/<來源分支全名>
+git fetch origin
+# 遠端有、但兩個本地分支都沒有的 commit；應為空（遠端分支尚不存在時跳過）
+git log --oneline origin/<來源分支> --not <來源分支> dev/<來源分支>
+# 推到整合線 MR 用
+git push --force-with-lease=<來源分支>:$(git rev-parse --verify -q origin/<來源分支>) \
+  origin dev/<來源分支>:<來源分支>
 ```
+
+整合線 MR 合併後，推回穩定線基底（同樣先跑上面的 `git log` 檢查）：
+
+```bash
+git push --force-with-lease=<來源分支>:$(git rev-parse --verify -q origin/<來源分支>) \
+  origin <來源分支>:<來源分支>
+```
+
+- **`git log` 檢查不能省**：`--force-with-lease` 只保證遠端從 fetch 之後沒變，fetch 進來的陌生 commit（例如審閱者在 MR 頁面 apply suggestion）它擋不住。檢查有輸出就停下來，那些修改要先搬到本地來源分支。
+- **明確寫出預期 SHA**：只寫 `--force-with-lease` 時，比對基準是 remote-tracking ref，而步驟 1 已經 fetch 過，保護等於失效。遠端分支不存在時 `rev-parse` 輸出空字串，這時代表「遠端不得已有此分支」。
+- **開發與 MR 修正一律在來源分支（穩定線基底）上做**，`dev/` 分支只是衍生品。審閱要求修改時，在來源分支 commit 後重跑本 skill：步驟 0 會偵測到目標分支已存在，選擇續接，只搬新增的 commit。
+- **兩次強推之間，本地來源分支會顯示與遠端分歧**，這是預期狀態。不要 `git pull`，否則整合線的歷史會被 merge 進穩定線基底的分支。
 
 ## 衝突
 
