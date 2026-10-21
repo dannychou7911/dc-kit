@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Site Reference</title>
+<style>
+  :root {
+    --accent: #ffcc00;
+    --accent-ink: #111111;
+    --ink: #1e293b;
+    --text: #334155;
+    --muted: #64748b;
+    --line: #e2e8f0;
+    --bg: #f7f7f7;
+    --card: #ffffff;
+    --sidebar-w: 290px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 16px; }
+  body {
+    margin: 0; color: var(--text); background: var(--bg); line-height: 1.6; font-size: 15px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  }
+  a { color: #0b63c5; }
+  code { background: #eef2f7; padding: 1px 5px; border-radius: 4px; font-size: 13px; word-break: break-all; }
+
+  /* ---------- layout ---------- */
+  .layout { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: 100vh; }
+  aside.sidebar { position: sticky; top: 0; height: 100vh; overflow-y: auto; background: #111; color: #e5e7eb; padding: 20px 16px 40px; }
+  .sidebar h1 { font-size: 17px; color: var(--accent); margin: 0 0 4px; word-break: break-word; }
+  .sidebar .sub { font-size: 12px; color: #9ca3af; margin-bottom: 16px; word-break: break-all; }
+  .sidebar h2 { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #9ca3af; margin: 20px 0 8px; }
+  .tree, .tree ul { list-style: none; margin: 0; padding: 0; }
+  .tree ul { padding-left: 14px; border-left: 1px dashed #444; margin-left: 6px; }
+  .tree li { margin: 2px 0; }
+  .tree a { display: block; color: #e5e7eb; text-decoration: none; padding: 4px 8px; border-radius: 6px; font-size: 13.5px; }
+  .tree a:hover { background: #222; }
+  .tree a.active { background: var(--accent); color: var(--accent-ink); }
+  .tree .count { color: #9ca3af; font-size: 11.5px; margin-left: 4px; }
+  .tree a.active .count { color: inherit; opacity: .7; }
+  .tree .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #444; vertical-align: 1px; margin-right: 4px; }
+  .tree .status-dot[data-decision="adopt"] { background: #22c55e; }
+  .tree .status-dot[data-decision="modify"] { background: #f59e0b; }
+  .tree .status-dot[data-decision="skip"] { background: #ef4444; }
+  .tree .status-dot[data-decision="discuss"] { background: #a78bfa; }
+
+  .toolbar { display: grid; gap: 6px; margin-top: 20px; }
+  .toolbar[hidden] { display: none; }
+  .toolbar button, .toolbar label.btn { background: #262626; color: #f3f4f6; border: 1px solid #3f3f3f; border-radius: 6px; padding: 7px 10px; font-size: 13px; cursor: pointer; text-align: left; }
+  .toolbar button:hover, .toolbar label.btn:hover { border-color: var(--accent); }
+  .toolbar .save-state { font-size: 12px; color: #9ca3af; }
+
+  main { padding: 28px 36px 80px; max-width: 1500px; min-width: 0; }
+  .page-title { font-size: 26px; color: var(--ink); margin: 0 0 6px; }
+  .lead { color: var(--muted); margin: 0 0 20px; }
+
+  /* ---------- cards ---------- */
+  section.card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 22px 24px; margin-bottom: 28px; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+  section.card > header { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: baseline; border-bottom: 3px solid var(--accent); padding-bottom: 10px; margin-bottom: 16px; }
+  section.card > header h2 { margin: 0; font-size: 21px; color: var(--ink); }
+  .chip { display: inline-block; font-size: 12px; padding: 2px 8px; border-radius: 999px; background: #f1f5f9; color: var(--text); border: 1px solid var(--line); }
+  h3 { font-size: 15.5px; color: var(--ink); margin: 20px 0 8px; }
+  h3:first-child { margin-top: 0; }
+  h3 small { font-weight: 400; color: var(--muted); }
+
+  table.meta { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.meta th, table.meta td { border: 1px solid var(--line); padding: 6px 10px; text-align: left; vertical-align: top; }
+  table.meta th { background: #f8fafc; color: var(--ink); font-weight: 600; }
+  table.meta.kv th { width: 130px; }
+
+  .grid-2 { display: grid; grid-template-columns: minmax(360px, 46%) 1fr; gap: 24px; align-items: start; }
+  @media (max-width: 1200px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  /* ---------- screenshot viewer ---------- */
+  .viewer { position: sticky; top: 12px; }
+  .viewer .tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .viewer .tabs button { border: 1px solid var(--line); background: #fff; border-radius: 6px; padding: 4px 10px; font-size: 13px; cursor: pointer; }
+  .viewer .tabs button.active { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
+  .viewer .frame { height: 72vh; overflow-y: auto; border: 1px solid var(--line); border-radius: 8px; background: #e5e7eb; display: flex; justify-content: center; align-items: flex-start; }
+  .viewer .frame img { display: block; width: 100%; height: auto; cursor: zoom-in; }
+  .viewer .frame.mobile img { width: 390px; max-width: 100%; }
+  .viewer .caption { font-size: 12.5px; color: var(--muted); margin-top: 6px; }
+
+  /* ---------- content ---------- */
+  ol.structure { margin: 0; padding-left: 24px; }
+  ol.structure li { margin: 5px 0; }
+  ol.structure .desc { color: var(--muted); font-size: 13.5px; }
+  ol.structure .dims { font-size: 12px; color: var(--muted); font-family: ui-monospace, Menlo, monospace; margin-left: 6px; }
+  ul.plain { margin: 0; padding-left: 20px; }
+  ul.plain li { margin: 3px 0; }
+  .tag { display: inline-block; font-size: 11px; font-weight: 700; padding: 0 6px; border-radius: 4px; margin-right: 4px; vertical-align: 1px; }
+  .tag.ref { background: #dcfce7; color: #166534; }
+  .tag.avoid { background: #fee2e2; color: #991b1b; }
+  .tag.fact { background: #e0f2fe; color: #075985; }
+  .tag.todo { background: #ede9fe; color: #5b21b6; }
+  .empty { color: var(--muted); font-size: 14px; }
+
+  /* ---------- design system ---------- */
+  .ds-group { margin-bottom: 26px; }
+  .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; }
+  .swatch-card { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: #fff; }
+  .swatch-card .chip-color { height: 72px; border-bottom: 1px solid var(--line); background-image: linear-gradient(45deg,#eee 25%,transparent 25%,transparent 75%,#eee 75%),linear-gradient(45deg,#eee 25%,transparent 25%,transparent 75%,#eee 75%); background-size: 12px 12px; background-position: 0 0, 6px 6px; position: relative; }
+  .swatch-card .chip-color i { position: absolute; inset: 0; }
+  .swatch-card .info { padding: 8px 10px; font-size: 13px; }
+  .swatch-card .info b { display: block; color: var(--ink); }
+  .swatch-card .info .usage { color: var(--muted); font-size: 12px; }
+  .copy { border: 0; background: #eef2f7; border-radius: 4px; padding: 1px 6px; font: 12px ui-monospace, Menlo, monospace; cursor: pointer; color: var(--ink); }
+  .copy:hover { background: var(--accent); color: var(--accent-ink); }
+  .role-title { display: block; font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: .04em; }
+  .type-sample { color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 520px; }
+  .type-spec { font: 12px ui-monospace, Menlo, monospace; color: var(--muted); }
+  .preview-box { width: 64px; height: 40px; background: #fff; border: 1px solid #cbd5e1; }
+  .preview-shadow { width: 80px; height: 44px; background: #fff; border-radius: 8px; margin: 6px; }
+  .component-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+  .component { border: 1px solid var(--line); border-radius: 10px; padding: 12px; background: #fcfcfd; }
+  .component h4 { margin: 0 0 8px; color: var(--ink); font-size: 14.5px; }
+  .component img { display: block; max-width: 100%; border: 1px solid var(--line); border-radius: 6px; background: #fff; margin-bottom: 8px; cursor: zoom-in; }
+  .component table { width: 100%; font-size: 12.5px; border-collapse: collapse; }
+  .component td { padding: 2px 4px; border-bottom: 1px dashed var(--line); vertical-align: top; }
+  .component td:first-child { color: var(--muted); width: 110px; }
+  details summary { cursor: pointer; color: var(--ink); font-weight: 600; font-size: 14px; }
+
+  /* ---------- interview ---------- */
+  .interview { margin-top: 18px; border: 2px dashed #f5d76e; border-radius: 10px; padding: 14px 16px; background: #fffdf5; }
+  .interview .row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 10px; }
+  .interview label { font-size: 13px; color: var(--ink); font-weight: 600; display: block; margin-bottom: 4px; }
+  .interview select, .interview input[type=text], .interview textarea { font: inherit; font-size: 14px; border: 1px solid #d6d3c4; border-radius: 6px; padding: 6px 8px; background: #fff; width: 100%; }
+  .interview select { width: auto; min-width: 160px; }
+  .interview textarea { min-height: 64px; resize: vertical; }
+  .q { margin: 10px 0; }
+  .q .q-text { font-size: 14px; color: var(--ink); margin-bottom: 4px; }
+  .meta-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px 16px; }
+
+  /* ---------- lightbox ---------- */
+  .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,.85); display: none; z-index: 50; overflow: auto; padding: 40px 20px; }
+  .lightbox.open { display: block; }
+  .lightbox img { display: block; margin: 0 auto; max-width: min(1440px, 100%); background: #fff; }
+  .lightbox .close { position: fixed; top: 12px; right: 18px; color: #fff; font-size: 28px; background: none; border: 0; cursor: pointer; }
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #111; color: #fff; padding: 6px 14px; border-radius: 6px; font-size: 13px; opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 60; }
+  .toast.show { opacity: 1; }
+
+  @media print {
+    .layout { display: block; }
+    aside.sidebar, .viewer .tabs, .toolbar { display: none; }
+    .viewer { position: static; }
+    .viewer .frame { height: auto; overflow: visible; }
+    section.card { break-inside: avoid-page; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <h1 id="side-title"></h1>
+    <div class="sub" id="side-sub"></div>
+    <h2>總覽</h2>
+    <ul class="tree" id="side-overview"></ul>
+    <h2>頁面</h2>
+    <ul class="tree" id="side-pages"></ul>
+    <div class="toolbar" id="toolbar" hidden>
+      <button type="button" id="btn-export-md">⬇ 匯出訪談紀錄（Markdown）</button>
+      <button type="button" id="btn-export-json">⬇ 匯出備份（JSON）</button>
+      <label class="btn">⬆ 匯入備份（JSON）<input type="file" id="input-import" accept="application/json" hidden></label>
+      <button type="button" id="btn-clear">🗑 清除本機紀錄</button>
+      <span class="save-state" id="save-state">紀錄會自動儲存在此瀏覽器（localStorage）。</span>
+    </div>
+  </aside>
+  <main id="main"></main>
+</div>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <button class="close" type="button" aria-label="關閉">✕</button>
+  <img alt="">
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const DATA = /*__SITE_DATA__*/null;
+
+const NOTE_TAGS = { ref: '值得參考', avoid: '不建議照抄', fact: '事實', todo: '待確認' };
+const COLOR_ROLES = { brand: '品牌色', accent: '輔助色', text: '文字', background: '背景', border: '框線', state: '狀態色' };
+const DECISIONS = [['', '（未選）'], ['adopt', '採用'], ['modify', '修改後採用'], ['skip', '不採用'], ['discuss', '待討論']];
+const PRIORITIES = [['', '（未選）'], ['P0', 'P0 必要'], ['P1', 'P1 重要'], ['P2', 'P2 可延後']];
+
+const site = DATA.site || {};
+const options = DATA.options || {};
+const tokens = DATA.tokens || {};
+const pages = DATA.pages || [];
+const interviewEnabled = Boolean(options.interview);
+const pageById = Object.fromEntries(pages.map(page => [page.id, page]));
+
+function escapeHtml(text) {
+  return String(text ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+}
+
+// Minimal inline markup: `code` and **bold**; everything else is escaped.
+function md(text) {
+  return escapeHtml(text)
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>');
+}
+
+function renderNote(note) {
+  const match = String(note).match(/^\[(\w+)\]\s*/);
+  if (!match || !NOTE_TAGS[match[1]]) return `<li>${md(note)}</li>`;
+  return `<li><span class="tag ${match[1]}">${NOTE_TAGS[match[1]]}</span>${md(String(note).slice(match[0].length))}</li>`;
+}
+
+function list(items, renderer = item => `<li>${md(item)}</li>`) {
+  if (!items || items.length === 0) return '<p class="empty">（無）</p>';
+  return `<ul class="plain">${items.map(renderer).join('')}</ul>`;
+}
+
+// "#000000 / 50%" (from tokens()) -> 8-digit hex so CSS can render it.
+function cssColor(value) {
+  const match = String(value).match(/^(#[0-9a-f]{6})\s*\/\s*(\d+)%$/i);
+  if (!match) return value;
+  return match[1] + Math.round(Number(match[2]) * 2.55).toString(16).padStart(2, '0');
+}
+
+function copyButton(value) {
+  return `<button type="button" class="copy" data-copy="${escapeHtml(value)}" title="點擊複製">${escapeHtml(value)}</button>`;
+}
+
+/* ---------- sidebar ---------- */
+function renderSidebar() {
+  document.title = `${site.name || 'Site'}：網站參考資料`;
+  document.getElementById('side-title').textContent = site.name || 'Site Reference';
+  document.getElementById('side-sub').innerHTML = `${escapeHtml(site.url || '')}<br>擷取日期：${escapeHtml(site.capturedAt || '—')}`;
+
+  const overview = [['overview', '網站總覽']];
+  if (Object.keys(tokens).length) overview.push(['design', 'Design System']);
+  if (DATA.global) overview.push(['global', '全站共用元件']);
+  if (interviewEnabled) overview.unshift(['interview-meta', '訪談資訊']);
+  document.getElementById('side-overview').innerHTML = overview
+    .map(([id, label]) => `<li><a href="#${id}">${escapeHtml(label)}</a></li>`).join('');
+
+  const tree = DATA.sitemap && DATA.sitemap.length ? DATA.sitemap : pages.map(page => ({ id: page.id }));
+  const renderTree = nodes => nodes.filter(node => pageById[node.id]).map(node => {
+    const page = pageById[node.id];
+    const count = node.count || page.count;
+    const children = node.children ? `<ul>${renderTree(node.children)}</ul>` : '';
+    const dot = interviewEnabled ? `<span class="status-dot" data-dot="${page.id}"></span>` : '';
+    return `<li><a href="#page-${page.id}">${dot}${escapeHtml(page.name)}${count > 1 ? `<span class="count">×${count}</span>` : ''}</a>${children}</li>`;
+  }).join('');
+  document.getElementById('side-pages').innerHTML = renderTree(tree);
+  document.getElementById('toolbar').hidden = !interviewEnabled;
+}
+
+/* ---------- overview ---------- */
+function renderOverview() {
+  const viewports = site.viewports || {};
+  const rows = pages.map(page => `
+    <tr><td><a href="#page-${page.id}">${escapeHtml(page.name)}</a></td><td>${escapeHtml(page.template || '')}</td>
+    <td>${page.count || 1}</td><td>${(page.sections || []).length}</td><td>${md(page.purpose || '')}</td></tr>`).join('');
+  return `
+  <section class="card" id="overview">
+    <header><h2>網站總覽</h2></header>
+    <table class="meta kv">
+      <tr><th>網址</th><td><a href="${escapeHtml(site.url)}" target="_blank" rel="noopener">${escapeHtml(site.url)}</a></td></tr>
+      <tr><th>擷取日期</th><td>${escapeHtml(site.capturedAt || '—')}</td></tr>
+      <tr><th>裝置</th><td>Desktop ${escapeHtml(viewports.desktop || '1440')}／Mobile ${escapeHtml(viewports.mobile || '390')}</td></tr>
+      <tr><th>頁面</th><td>${pages.length} 個代表頁，涵蓋 ${pages.reduce((sum, page) => sum + (page.count || 1), 0)} 個頁面</td></tr>
+      ${site.summary ? `<tr><th>網站定位與風格</th><td>${md(site.summary)}</td></tr>` : ''}
+    </table>
+    <h3>頁面一覽</h3>
+    <table class="meta"><tr><th>頁面</th><th>模板</th><th>數量</th><th>區塊數</th><th>用途</th></tr>${rows}</table>
+    ${site.notes && site.notes.length ? `<h3>擷取說明與整體觀察</h3>${list(site.notes, renderNote)}` : ''}
+  </section>`;
+}
+
+/* ---------- design system ---------- */
+function renderColors(colors) {
+  if (!colors || !colors.length) return '';
+  // Keep one grid (groups of 1–2 colors would waste a row each) and sort by role order instead.
+  const roleOrder = Object.keys(COLOR_ROLES);
+  const rank = color => { const index = roleOrder.indexOf(color.role); return index === -1 ? roleOrder.length : index; };
+  const cards = [...colors].sort((a, b) => rank(a) - rank(b)).map(color => `
+    <div class="swatch-card">
+      <div class="chip-color"><i style="background:${escapeHtml(cssColor(color.value))}"></i></div>
+      <div class="info"><span class="role-title">${escapeHtml(COLOR_ROLES[color.role] || color.role || '其他')}</span>
+        <b>${escapeHtml(color.name || '')}</b>${copyButton(color.value)}
+        ${color.usage ? `<div class="usage">${md(color.usage)}</div>` : ''}</div>
+    </div>`).join('');
+  return `<div class="ds-group" id="design-colors"><h3>色彩</h3><div class="swatch-grid">${cards}</div></div>`;
+}
+
+function renderTypography(typography) {
+  if (!typography) return '';
+  const families = (typography.families || []).map(family =>
+    `<li><b style="font-family:${escapeHtml(family.name)}">${escapeHtml(family.name)}</b>：${md(family.role || '')}${family.source ? `<span class="type-spec">（${escapeHtml(family.source)}）</span>` : ''}</li>`).join('');
+  const rows = (typography.scale || []).map(level => {
+    const style = [
+      level.fontFamily && `font-family:${level.fontFamily}`,
+      level.size && `font-size:min(${level.size}, 56px)`,
+      level.weight && `font-weight:${level.weight}`,
+      level.lineHeight && `line-height:${level.lineHeight}`,
+      level.letterSpacing && `letter-spacing:${level.letterSpacing}`,
+      level.textTransform && `text-transform:${level.textTransform}`,
+    ].filter(Boolean).join(';');
+    const spec = [level.size, level.weight, level.lineHeight && `lh ${level.lineHeight}`, level.letterSpacing && level.letterSpacing !== 'normal' && `ls ${level.letterSpacing}`]
+      .filter(Boolean).join(' · ');
+    return `<tr><th>${escapeHtml(level.name)}</th>
+      <td><div class="type-sample" style="${escapeHtml(style)}">${escapeHtml(level.sample || 'The quick brown fox 範例文字')}</div></td>
+      <td class="type-spec">${escapeHtml(spec)}${level.mobileSize ? `<br>Mobile ${escapeHtml(level.mobileSize)}` : ''}</td></tr>`;
+  }).join('');
+  return `<div class="ds-group" id="design-type"><h3>字型與字級 <small>（本機未安裝該字型時會以系統字型顯示）</small></h3>
+    ${families ? `<ul class="plain">${families}</ul>` : ''}
+    ${rows ? `<table class="meta" style="margin-top:10px"><tr><th>層級</th><th>範例</th><th>規格</th></tr>${rows}</table>` : ''}</div>`;
+}
+
+function renderValueTable(title, id, items, preview) {
+  if (!items || !items.length) return '';
+  const rows = items.map(item => `<tr>
+      ${preview ? `<td style="width:110px">${preview(item)}</td>` : ''}
+      <td>${item.name ? `<b>${escapeHtml(item.name)}</b><br>` : ''}${copyButton(item.value)}${item.mobile ? `<div class="type-spec">Mobile ${escapeHtml(item.mobile)}</div>` : ''}</td>
+      <td>${md(item.usage || item.note || '')}</td></tr>`).join('');
+  return `<div class="ds-group" id="${id}"><h3>${escapeHtml(title)}</h3><table class="meta">${rows}</table></div>`;
+}
+
+function renderComponents(components) {
+  if (!components || !components.length) return '';
+  const cards = components.map(component => {
+    const css = Object.entries(component.css || {}).filter(([, value]) => value)
+      .map(([key, value]) => `<tr><td>${escapeHtml(key)}</td><td><code>${escapeHtml(value)}</code></td></tr>`).join('');
+    return `<div class="component"><h4>${escapeHtml(component.name)}</h4>
+      ${component.image ? `<img src="${escapeHtml(component.image)}" alt="${escapeHtml(component.name)}" loading="lazy" data-zoom>` : ''}
+      ${css ? `<table>${css}</table>` : ''}
+      ${component.states ? `<p style="font-size:13px;margin:8px 0 0"><b>狀態：</b>${md(component.states)}</p>` : ''}
+      ${component.note ? `<p style="font-size:13px;margin:4px 0 0;color:var(--muted)">${md(component.note)}</p>` : ''}</div>`;
+  }).join('');
+  return `<div class="ds-group" id="design-components"><h3>元件樣式</h3><div class="component-grid">${cards}</div></div>`;
+}
+
+function renderDesign() {
+  if (!Object.keys(tokens).length) return '';
+  const variables = tokens.cssVariables && tokens.cssVariables.length ? `
+    <div class="ds-group"><details><summary>CSS 變數（${tokens.cssVariables.length} 個）</summary>
+      <table class="meta" style="margin-top:8px"><tr><th>名稱</th><th>值</th><th>說明</th></tr>
+      ${tokens.cssVariables.map(variable => `<tr><td><code>${escapeHtml(variable.name)}</code></td><td>${copyButton(variable.value)}</td><td>${md(variable.note || '')}</td></tr>`).join('')}
+      </table></details></div>` : '';
+  return `
+  <section class="card" id="design">
+    <header><h2>Design System</h2><span class="chip">由線上網站 computed style 與 CSS 整理</span></header>
+    ${renderColors(tokens.colors)}
+    ${renderTypography(tokens.typography)}
+    ${renderValueTable('間距', 'design-spacing', tokens.spacing)}
+    ${renderValueTable('版面', 'design-layout', tokens.layout)}
+    ${renderValueTable('圓角', 'design-radius', tokens.radius, item => `<div class="preview-box" style="border-radius:${escapeHtml(item.value)}"></div>`)}
+    ${renderValueTable('陰影', 'design-shadow', tokens.shadows, item => `<div class="preview-shadow" style="box-shadow:${escapeHtml(item.value)}"></div>`)}
+    ${renderValueTable('斷點', 'design-breakpoints', tokens.breakpoints)}
+    ${renderComponents(tokens.components)}
+    ${variables}
+  </section>`;
+}
+
+/* ---------- pages ---------- */
+function sectionDims(section) {
+  const label = device => {
+    const spec = section[device] || {};
+    if (spec.hidden) return '不顯示';
+    if (typeof spec.h === 'number') return `${spec.h.toLocaleString()}px`;
+    return spec.h || '—';
+  };
+  return `D ${label('desktop')}／M ${label('mobile')}`;
+}
+
+function renderBody(block, id) {
+  const shots = [...(block.shots || [])];
+  if (block.sections && block.sections.length) shots.unshift({ label: '版面示意圖', src: `wireframes/${block.id}.svg` });
+  const structure = block.sections && block.sections.length ? `
+    <h3>版面結構 <small>（由上到下，編號對應「版面示意圖」；D／M 為實測高度）</small></h3>
+    <ol class="structure">${block.sections.map(section => `<li><b>${escapeHtml(section.name)}</b><span class="dims">${escapeHtml(sectionDims(section))}</span>
+      ${section.desc ? `<div class="desc">${md(section.desc)}</div>` : ''}</li>`).join('')}</ol>` : '';
+  const meta = block.url ? `
+    <table class="meta kv">
+      <tr><th>網址</th><td><a href="${escapeHtml(block.url)}" target="_blank" rel="noopener">${escapeHtml(block.url)}</a></td></tr>
+      ${block.template ? `<tr><th>模板</th><td>${escapeHtml(block.template)}${block.count > 1 ? `（同模板共 ${block.count} 頁）` : ''}</td></tr>` : ''}
+      ${block.purpose ? `<tr><th>頁面用途</th><td>${md(block.purpose)}</td></tr>` : ''}
+    </table>` : '';
+  return `
+    <div class="grid-2">
+      ${shots.length ? `<div class="viewer" data-shots='${escapeHtml(JSON.stringify(shots))}'></div>` : '<div></div>'}
+      <div>
+        ${meta}
+        ${structure}
+        <h3>功能與互動</h3>${list(block.features)}
+        <h3>排版與樣式</h3>${list(block.design)}
+        <h3>觀察</h3>${list(block.notes, renderNote)}
+      </div>
+    </div>
+    ${interviewEnabled ? `<div class="interview">${renderInterview(id, block.questions)}</div>` : ''}`;
+}
+
+function renderGlobal() {
+  if (!DATA.global) return '';
+  return `
+  <section class="card" id="global">
+    <header><h2>全站共用元件</h2><span class="chip">Header／Footer／浮動元件</span></header>
+    ${renderBody({ ...DATA.global, id: 'global' }, 'global')}
+  </section>`;
+}
+
+function renderPage(page) {
+  const chips = [
+    page.template && `<span class="chip">${escapeHtml(page.template)}</span>`,
+    page.count > 1 && `<span class="chip">×${page.count}</span>`,
+    page.url && `<code>${escapeHtml(new URL(page.url, site.url || location.href).pathname)}</code>`,
+  ].filter(Boolean).join(' ');
+  return `
+  <section class="card" id="page-${page.id}">
+    <header><h2>${escapeHtml(page.name)}</h2>${chips}</header>
+    ${renderBody(page, page.id)}
+  </section>`;
+}
+
+/* ---------- interview ---------- */
+function options_(list) {
+  return list.map(([value, label]) => `<option value="${value}">${label}</option>`).join('');
+}
+
+function renderInterview(id, questions) {
+  const blocks = (questions || []).map((question, index) => `
+    <div class="q"><div class="q-text"><b>Q${index + 1}.</b> ${md(question)}</div>
+      <textarea data-field="${id}.q${index + 1}" placeholder="回答"></textarea></div>`).join('');
+  return `
+    <h3>📝 需求訪談</h3>
+    <div class="row">
+      <div><label>是否採用</label><select data-field="${id}.decision">${options_(DECISIONS)}</select></div>
+      <div><label>優先度</label><select data-field="${id}.priority">${options_(PRIORITIES)}</select></div>
+    </div>
+    ${blocks}
+    <div class="q"><label>備註／要調整的地方</label><textarea data-field="${id}.note"></textarea></div>`;
+}
+
+function renderInterviewMeta() {
+  if (!interviewEnabled) return '';
+  return `
+  <section class="card" id="interview-meta">
+    <header><h2>訪談資訊</h2></header>
+    <div class="interview" style="margin-top:0">
+      <div class="meta-form">
+        <div><label>訪談日期</label><input type="text" data-field="meta.date" placeholder="YYYY-MM-DD"></div>
+        <div><label>訪談者</label><input type="text" data-field="meta.interviewer"></div>
+        <div><label>受訪者／單位</label><input type="text" data-field="meta.interviewee"></div>
+        <div><label>本次目標</label><input type="text" data-field="meta.goal" placeholder="例：確認要參考的頁面與風格"></div>
+      </div>
+      <div class="q"><label>整體回饋</label><textarea data-field="meta.overall"></textarea></div>
+    </div>
+  </section>`;
+}
+
+/* ---------- viewer & lightbox ---------- */
+const lightbox = document.getElementById('lightbox');
+function openLightbox(src, alt) {
+  const image = lightbox.querySelector('img');
+  image.src = src;
+  image.alt = alt;
+  lightbox.classList.add('open');
+  lightbox.scrollTop = 0;
+}
+lightbox.addEventListener('click', event => { if (event.target.tagName !== 'IMG') lightbox.classList.remove('open'); });
+document.addEventListener('keydown', event => { if (event.key === 'Escape') lightbox.classList.remove('open'); });
+
+function mountViewer(container) {
+  const shots = JSON.parse(container.dataset.shots);
+  container.innerHTML = `
+    <div class="tabs">${shots.map((shot, index) => `<button type="button" data-index="${index}">${escapeHtml(shot.label)}</button>`).join('')}</div>
+    <div class="frame"><img alt="" loading="lazy"></div>
+    <div class="caption">點擊圖片可放大檢視；框內可上下捲動看整頁。</div>`;
+  const frame = container.querySelector('.frame');
+  const image = frame.querySelector('img');
+  const buttons = [...container.querySelectorAll('.tabs button')];
+  const select = index => {
+    const shot = shots[index];
+    buttons.forEach((button, i) => button.classList.toggle('active', i === index));
+    frame.classList.toggle('mobile', Boolean(shot.mobile));
+    image.src = shot.src;
+    image.alt = shot.label;
+    frame.scrollTop = 0;
+  };
+  buttons.forEach((button, index) => button.addEventListener('click', () => select(index)));
+  image.addEventListener('click', () => openLightbox(image.src, image.alt));
+  select(0);
+}
+
+/* ---------- copy ---------- */
+const toast = document.getElementById('toast');
+function showToast(message) {
+  toast.textContent = message;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 1200);
+}
+async function copyText(value) {
+  try {
+    await navigator.clipboard.writeText(value);
+  } catch (error) {
+    // Clipboard API can be blocked on file://; fall back to a temporary textarea.
+    const area = document.createElement('textarea');
+    area.value = value;
+    document.body.appendChild(area);
+    area.select();
+    document.execCommand('copy');
+    area.remove();
+  }
+  showToast(`已複製 ${value}`);
+}
+document.addEventListener('click', event => {
+  const button = event.target.closest('[data-copy]');
+  if (button) copyText(button.dataset.copy);
+  const zoom = event.target.closest('img[data-zoom]');
+  if (zoom) openLightbox(zoom.src, zoom.alt);
+});
+
+/* ---------- interview persistence ---------- */
+const STORAGE_KEY = `site-reference:${(() => { try { return new URL(site.url).host; } catch { return site.name || 'site'; } })()}:${site.capturedAt || ''}`;
+let state = {};
+
+function loadState() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+  } catch (error) {
+    console.warn('Failed to read saved interview notes', error);
+    return {};
+  }
+}
+
+function persist() {
+  const label = document.getElementById('save-state');
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    label.textContent = `已自動儲存 ${new Date().toLocaleTimeString()}`;
+  } catch (error) {
+    label.textContent = '⚠ 無法寫入 localStorage，請改用「匯出備份」保存。';
+  }
+}
+
+function refreshFields() {
+  document.querySelectorAll('[data-field]').forEach(field => { field.value = state[field.dataset.field] || ''; });
+  document.querySelectorAll('[data-dot]').forEach(dot => { dot.dataset.decision = state[`${dot.dataset.dot}.decision`] || ''; });
+}
+
+function labelOf(list, value) {
+  const found = list.find(([key]) => key === value);
+  return found && value ? found[1] : '（未填）';
+}
+
+function buildMarkdown() {
+  const value = key => (state[key] || '').trim();
+  const lines = [
+    `# ${site.name || 'Site'} 參考網站訪談紀錄`, '',
+    `- 參考網站：${site.url || ''}（擷取日期 ${site.capturedAt || '—'}）`,
+    `- 訪談日期：${value('meta.date') || '（未填）'}`,
+    `- 訪談者：${value('meta.interviewer') || '（未填）'}`,
+    `- 受訪者：${value('meta.interviewee') || '（未填）'}`,
+    `- 目標：${value('meta.goal') || '（未填）'}`, '',
+    '## 整體回饋', '', value('meta.overall') || '（未填）', '',
+  ];
+  const blocks = [...(DATA.global ? [{ ...DATA.global, id: 'global', name: '全站共用元件' }] : []), ...pages];
+  blocks.forEach(block => {
+    lines.push(`## ${block.name}`, '');
+    lines.push(`- 是否採用：${labelOf(DECISIONS, value(`${block.id}.decision`))}`);
+    lines.push(`- 優先度：${labelOf(PRIORITIES, value(`${block.id}.priority`))}`, '');
+    (block.questions || []).forEach((question, index) => {
+      lines.push(`**Q${index + 1}. ${question}**`, '', value(`${block.id}.q${index + 1}`) || '（未回答）', '');
+    });
+    const note = value(`${block.id}.note`);
+    if (note) lines.push('### 備註', '', note, '');
+  });
+  return lines.join('\n');
+}
+
+function download(filename, content, type) {
+  const url = URL.createObjectURL(new Blob([content], { type }));
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+function bindInterview() {
+  if (!interviewEnabled) return;
+  state = loadState();
+  document.querySelectorAll('[data-field]').forEach(field => {
+    field.addEventListener(field.tagName === 'SELECT' ? 'change' : 'input', () => {
+      state[field.dataset.field] = field.value;
+      persist();
+      refreshFields();
+    });
+  });
+  refreshFields();
+  const slug = STORAGE_KEY.replace(/[^\w.-]+/g, '-');
+  document.getElementById('btn-export-md').addEventListener('click', () => download(`${slug}.md`, buildMarkdown(), 'text/markdown;charset=utf-8'));
+  document.getElementById('btn-export-json').addEventListener('click', () => download(`${slug}.json`, JSON.stringify(state, null, 2), 'application/json'));
+  document.getElementById('input-import').addEventListener('change', async event => {
+    const file = event.target.files[0];
+    if (!file) return;
+    const label = document.getElementById('save-state');
+    try {
+      const imported = JSON.parse(await file.text());
+      if (typeof imported !== 'object' || imported === null || Array.isArray(imported)) throw new Error('Invalid format');
+      state = imported;
+      persist();
+      refreshFields();
+      label.textContent = '已匯入備份。';
+    } catch (error) {
+      label.textContent = '⚠ 匯入失敗：檔案不是有效的 JSON 備份。';
+    } finally {
+      event.target.value = '';
+    }
+  });
+  document.getElementById('btn-clear').addEventListener('click', () => {
+    if (!confirm('確定清除此瀏覽器中的所有訪談紀錄？（建議先匯出備份）')) return;
+    state = {};
+    persist();
+    refreshFields();
+  });
+}
+
+/* ---------- active link on scroll ---------- */
+function watchActiveSection() {
+  const links = new Map([...document.querySelectorAll('.tree a[href^="#"]')].map(link => [link.getAttribute('href').slice(1), link]));
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      links.forEach(link => link.classList.remove('active'));
+      links.get(entry.target.id)?.classList.add('active');
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  document.querySelectorAll('section.card[id]').forEach(section => observer.observe(section));
+}
+
+/* ---------- init ---------- */
+if (options.accent) document.documentElement.style.setProperty('--accent', options.accent);
+if (options.accentInk) document.documentElement.style.setProperty('--accent-ink', options.accentInk);
+renderSidebar();
+document.getElementById('main').innerHTML = `
+  <h1 class="page-title">${escapeHtml(site.name || '')}：網站參考資料</h1>
+  <p class="lead">每頁依「截圖與版面示意圖 → 版面結構 → 功能與互動 → 排版與樣式 → 觀察」整理；Design System 彙整全站的色彩、字型、間距與元件樣式，點擊數值可直接複製。</p>
+  ${renderInterviewMeta()}
+  ${renderOverview()}
+  ${renderDesign()}
+  ${renderGlobal()}
+  ${pages.map(renderPage).join('')}`;
+document.querySelectorAll('.viewer[data-shots]').forEach(mountViewer);
+bindInterview();
+watchActiveSection();
+</script>
+</body>
+</html>
