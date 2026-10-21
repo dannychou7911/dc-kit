@@ -18,6 +18,7 @@
 | `persist-ai-context` | 建立、審閱與操作 `.ai/` 持久化專案脈絡層，讓 handoff、follow-up 與 archive 能跨 AI agent、工具與工作階段延續 |
 | `mermaid` | 依需求產生 Mermaid 圖表，支援 flowchart、sequence、class、ER、Gantt 等 23 種圖表類型 |
 | `obsidian-markdown` | 建立與編輯 Obsidian Flavored Markdown（wikilinks、embeds、callouts、properties 等語法） |
+| `site-reference` | 擷取指定網站各頁的 Desktop / Mobile 截圖、版面區塊、功能清單與 design token，產出可直接開啟的單檔 HTML 參考報告；需要 `chrome-devtools` MCP 與 `python3` |
 
 #### 程式碼理解與審閱
 
@@ -126,6 +127,7 @@ claude --plugin-dir /path/to/sc-cc-plugin
 
 - Claude Code >= 1.0.33
 - Node.js 與 Chrome（`chrome-devtools` MCP server 使用，見上方 MCP Servers 一節）
+- `python3`（`site-reference` skill 產生報告與示意圖使用；拼接、裁切截圖時另需 Pillow，可選）
 
 ## 來源與致謝
 
