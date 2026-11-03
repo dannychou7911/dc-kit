@@ -29,6 +29,8 @@
 | `code-review` | 程式碼審閱準則，以通用原則（命名、函數設計、錯誤處理、SOLID 等）加上特定語言準則進行審閱 |
 | `review-comments` | 依 8 大核心原則審查程式碼註解品質（重 why 而非 what），輸出結構化審查報告、不改動程式碼 |
 | `mr-review-criteria` | Merge Request 審閱回饋的評估判準與報告格式：採納程度分級、優先度分級、影響範圍檢查清單與標準報告結構 |
+| `code-review-and-quality` | 合併前的多面向程式碼審閱，適用自己、其他 agent 或他人寫的變更，附效能與安全性 checklist |
+| `mr-review-reply` | 將已完成的審閱結果整理成語氣客氣、結構固定的留言，透過 GitLab MCP 發佈到指定 MR |
 
 #### 測試與開發流程
 
@@ -39,6 +41,20 @@
 | `vue-testing-best-practices` | Vue.js 測試實務，涵蓋 Vitest、Vue Test Utils、元件測試、mocking 與 Playwright E2E |
 | `sync-branch-to-develop` | 在同時維護 main 與 develop 兩條長期線的專案，以 cherry-pick 把開發分支搬到另一條線的同名分支，並用 `range-diff` 驗證一致 |
 | `git-worktree` | 互動式建立、列出、刪除 git worktree 與本地分支，每個決策點逐一詢問並確認指令後才執行；僅限手動觸發 `/git-worktree` |
+| `playwright-cli` | 以 Playwright 自動化瀏覽器操作、測試網頁與撰寫 Playwright 測試，涵蓋 request mocking、storage state、tracing 與錄影 |
+
+#### 瀏覽器除錯與效能
+
+以下 skill 皆透過 `chrome-devtools` MCP 操作瀏覽器（見下方 MCP Servers 一節）。
+
+| 名稱 | 說明 |
+|------|------|
+| `chrome-devtools` | 透過 Chrome DevTools MCP 除錯網頁、自動化瀏覽器互動、分析效能與檢查 network request |
+| `troubleshooting` | `list_pages`、`new_page`、`navigate_page` 失敗或 MCP server 初始化失敗時，排查連線與 target 問題 |
+| `a11y-debugging` | 依 web.dev 準則稽核無障礙：語意化 HTML、ARIA label、focus 狀態、鍵盤操作、點擊區域與色彩對比 |
+| `cookie-debugging` | 檢查 cookie 與 session 狀態，診斷 401/403、驗證重導、session 過期、SameSite / Partitioned cookie 與 cookie consent 合規 |
+| `debug-optimize-lcp` | 拆解與優化 Largest Contentful Paint（LCP），找出主要內容延遲出現的原因 |
+| `memory-leak-debugging` | 以 heap snapshot 擷取、比對與檢查，診斷 JavaScript / Node.js 的記憶體洩漏與 OOM |
 
 #### 框架與語言慣例
 
