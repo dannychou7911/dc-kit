@@ -5,7 +5,7 @@ description: Uses Chrome DevTools via MCP for efficient debugging, troubleshooti
 
 ## Core Concepts
 
-**Browser lifecycle**: Browser starts automatically on first tool call using a persistent Chrome profile. Configure via CLI args in the MCP server configuration: `npx chrome-devtools-mcp@latest --help`.
+**Browser lifecycle**: Browser starts automatically on first tool call. This plugin passes `--isolated`, so each MCP server instance uses a temporary Chrome profile that is deleted when the browser closes; cookies and logins do not persist across sessions. Configure via CLI args in the MCP server configuration: `npx chrome-devtools-mcp@latest --help`.
 Addional tooling can be enabled by providing the following flags:
 
 - For extension tooling, use the `--categoryExtensions` flag.

@@ -100,9 +100,11 @@
 
 | 名稱 | 啟動方式 | 說明 |
 |------|----------|------|
-| `chrome-devtools` | `npx -y chrome-devtools-mcp@latest` | 讓 Claude Code 透過 [Chrome DevTools Protocol](https://github.com/ChromeDevTools/chrome-devtools-mcp) 操作瀏覽器：開頁面、擷取畫面、讀取 console 與 network、效能追蹤 |
+| `chrome-devtools` | `npx -y chrome-devtools-mcp@latest --isolated` | 讓 Claude Code 透過 [Chrome DevTools Protocol](https://github.com/ChromeDevTools/chrome-devtools-mcp) 操作瀏覽器：開頁面、擷取畫面、讀取 console 與 network、效能追蹤 |
 
 前置需求：本機需有 Node.js（提供 `npx`）與 Chrome。首次啟動會下載 `chrome-devtools-mcp` 套件，需要網路連線。
+
+`--isolated` 讓每個 MCP 實例使用暫存的 Chrome profile，瀏覽器關閉後自動刪除，因此多個 Claude Code session 可以同時使用，不會因共用 profile 而無法開啟瀏覽器。代價是 cookie 與登入狀態不會跨 session 保留。
 
 ## 安裝方式
 
