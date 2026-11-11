@@ -21,7 +21,7 @@ description: >
   assistant: "讓我主動用 frontend-code-reviewer agent 審閱這些變更。"
   </example>
 tools: ["Read", "Grep", "Glob", "Bash"]
-model: sonnet
+model: opus
 color: red
 ---
 
