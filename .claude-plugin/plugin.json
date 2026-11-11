@@ -2,7 +2,7 @@
   "name": "dc-kit",
   "displayName": "DC Kit",
   "description": "A personal Claude Code toolkit, free to share. Bundles curated skills, agents and commands to boost everyday development workflows.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": {
     "name": "Danny Chou",
     "email": "yschou01@gmail.com"
