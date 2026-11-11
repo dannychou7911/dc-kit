@@ -1,6 +1,6 @@
 ---
 name: explore
-description: 探索陌生或大型 codebase，建立專案結構、入口點、跨檔案功能路徑、依賴邊界、既有慣例或改動前影響範圍的已查證地圖。Use when the user asks to understand a repository, trace a feature across multiple files, locate where a behavior is implemented, identify affected files before implementation, investigate project conventions, assess dependencies, or onboard to an unfamiliar project — including casual phrasings like「這專案在幹嘛」「這功能到底怎麼跑的」「幫我搞懂這個 repo」「這個東西架構長怎樣」. Even if the user doesn't explicitly ask for an "exploration" or a "map", use this skill whenever they're orienting in unfamiliar code, tracing a feature, or scoping impact before a change. This skill is read-only — inspect and report, but do not modify code, configuration, dependencies, tests, documentation, or repository state. Do not use for explaining one isolated file or function that is already identified — when the target narrows to a single implementation, use explain if available.
+description: 探索陌生或大型 codebase，建立專案結構、入口點、跨檔案功能路徑、依賴邊界、既有慣例或改動前影響範圍的已查證地圖。Use when the user asks to understand a repository, trace a feature across multiple files when its entry point is not yet located, locate where a behavior is implemented, identify affected files before implementation, investigate project conventions, assess dependencies, or onboard to an unfamiliar project — including casual phrasings like「這專案在幹嘛」「這功能到底怎麼跑的」「幫我搞懂這個 repo」「這個東西架構長怎樣」. Even if the user doesn't explicitly ask for an "exploration" or a "map", use this skill whenever they're orienting in unfamiliar code, tracing a feature, or scoping impact before a change. This skill is read-only — inspect and report, but do not modify code, configuration, dependencies, tests, documentation, or repository state. Do not use for explaining code whose target or entry point is already identified (a file, function, class, or a flow starting from a known entry, even across files) — use explain if available.
 context: fork
 agent: Explore
 background: true
@@ -86,7 +86,7 @@ background: true
 | 登入流程在哪實作 | 路徑 | 從入口到資料存取或外部依賴的跨檔案路徑 |
 | 專案接了哪些外部服務 | 邊界 | 對外 API、SDK、database、queue、storage 與部署依賴 |
 | 我要改 X，會影響什麼 | 影響範圍 | 直接修改點、上游、下游、contract、測試與設定 |
-| 某個 function 為什麼這樣寫 | 單一實作 | 停止使用本 skill，改用 explain 或單一實作解釋格式 |
+| 某個 function 為什麼這樣寫、已知入口的流程怎麼跑 | 已定位目標 | 停止使用本 skill，改用 explain 或單一實作解釋格式 |
 
 不要混合不同粒度。
 
@@ -461,7 +461,7 @@ dependency 名稱只能證明 dependency 存在，不能證明實際使用方式
 
 每次只移動一個粒度。
 
-如果目標縮小到單一檔案、component、class 或 function：
+如果目標縮小到單一檔案、component、class、function，或已找到入口、只需解釋其後續流程：
 
 - 有 `explain` skill：改用該 skill。
 - 沒有 `explain` skill：使用單一實作解釋方式回答。
