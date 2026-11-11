@@ -106,6 +106,22 @@
 
 `--isolated` 讓每個 MCP 實例使用暫存的 Chrome profile，瀏覽器關閉後自動刪除，因此多個 Claude Code session 可以同時使用，不會因共用 profile 而無法開啟瀏覽器。代價是 cookie 與登入狀態不會跨 session 保留。
 
+### LSP Servers
+
+由 `.lsp.json` 定義，安裝 plugin 後自動註冊，讓 Claude Code 在編輯 `.vue` 檔時取得型別錯誤、跳至定義、查找引用等 code intelligence。
+
+| 名稱 | 啟動方式 | 適用檔案 |
+|------|----------|----------|
+| `vue` | `vue-language-server --stdio` | `.vue` |
+
+前置需求：plugin 不會替你安裝 language server，需自行全域安裝並確認 `vue-language-server` 在 `PATH` 中：
+
+```bash
+npm install -g @vue/language-server
+```
+
+型別資訊取自專案內的 `node_modules/typescript/lib`，因此專案需已安裝 `typescript`。
+
 ## 安裝方式
 
 ### 從 marketplace 安裝
@@ -167,6 +183,7 @@ claude --plugin-dir /path/to/dc-kit
 
 - Claude Code >= 1.0.33
 - Node.js 與 Chrome（`chrome-devtools` MCP server 使用，見上方 MCP Servers 一節）
+- `@vue/language-server`（`vue` LSP server 使用，需全域安裝，見上方 LSP Servers 一節）
 - `python3`（`site-reference` skill 產生報告與示意圖使用；拼接、裁切截圖時另需 Pillow，可選）
 
 ## 來源與致謝
