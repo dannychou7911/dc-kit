@@ -1,6 +1,7 @@
 ---
 name: explain
 description: 解釋一段已經鎖定範圍的程式碼——某個檔案、函式、class、diff、PR，或使用者直接貼上的片段。依固定順序輸出（一句結論 → 資料流 → 關鍵行 → 注意點 → 可追問方向），刻意留白等使用者追問，而不是一次把所有細節倒完。Use this skill whenever the user asks what a piece of code does, how a specific function/file/module works, why it was written that way, asks you to walk through a diff or review a PR, or pastes code and asks about it — including casual phrasings like "這段在幹嘛"、"explain this"、"這樣寫為什麼會 work"、"幫我看這個 function"。Do NOT use this when the target is not yet identified and the user is still orienting in an unfamiliar codebase — use explore for that instead.
+disable-model-invocation: true
 ---
 
 # Explain Code
