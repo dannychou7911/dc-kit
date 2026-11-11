@@ -1,7 +1,7 @@
 # 前端框架審閱規則（Frontend Framework Patterns）
 
 > 本檔自 `agents/frontend-code-reviewer.md` 抽離，收錄 Vue 3 / Vue 2 / Nuxt 2 的框架專屬審閱規則。
-> 定位為**知識庫**：供人類維護者與未來擴充參考。若要讓某項規則於審閱時生效，請整併進主 agent 或另建專屬 agent。
+> 審閱變更含 Vue / Nuxt 程式碼時，`frontend-code-reviewer` agent 會在執行階段讀取本檔並套用。
 
 ## Vue 3 Patterns (HIGH)
 
