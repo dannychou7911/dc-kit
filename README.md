@@ -131,7 +131,23 @@ npm install -g @vue/language-server
 /plugin install dc-kit@dc-tools
 ```
 
-更新：`/plugin marketplace update dc-tools`。只有 `plugin.json` 的 `version` 變更時才會拿到新版，因此每次發佈都要調升版本號。
+### 更新
+
+`dc-tools` 屬於第三方 marketplace，Claude Code 預設**不會**自動更新，也不會主動通知有新版。可擇一方式更新：
+
+- 在 Claude Code 內執行 `/plugin`，進入 Installed，選 `dc-kit` 後按 **Update now**
+- 在 Claude Code 內執行 `/plugin`，進入 Marketplaces，選 `dc-tools` 後按 **Update marketplace**（會一併更新已安裝的 plugin）
+- 在 shell 執行：
+
+  ```bash
+  claude plugin update dc-kit@dc-tools
+  ```
+
+若想自動更新，在 `/plugin` → Marketplaces → `dc-tools` 選 **Enable auto-update**。開啟後，Claude Code 會在 session 開始後於背景更新，畫面顯示 `Plugin updated: dc-kit · Run /reload-plugins to apply`。
+
+更新完成後，執行中的 session 仍使用舊版。執行 `/reload-plugins` 或重新啟動 Claude Code 後才會載入新版。
+
+> 維護者注意：Claude Code 以 `plugin.json` 的 `version` 判斷是否有新版。版本號沒變時，即使 push 了新 commit，使用者也拿不到更新，因此每次發佈都要依下方「版本規則」調升版本號。
 
 ### 在專案中預先啟用
 
