@@ -26,7 +26,6 @@
 |------|------|
 | `explain` | 解釋已鎖定範圍的程式碼（檔案、函式、diff、PR），依固定順序輸出：結論 → 資料流 → 關鍵行 → 注意點 → 可追問方向 |
 | `explore` | 探索陌生或大型 codebase，建立專案結構、入口點、跨檔案功能路徑與改動影響範圍的地圖；唯讀，不修改任何檔案 |
-| `code-review` | 程式碼審閱準則，以通用原則（命名、函數設計、錯誤處理、SOLID 等）加上特定語言準則進行審閱 |
 | `review-comments` | 依 8 大核心原則審查程式碼註解品質（重 why 而非 what），輸出結構化審查報告、不改動程式碼 |
 | `mr-review-criteria` | Merge Request 審閱回饋的評估判準與報告格式：採納程度分級、優先度分級、影響範圍檢查清單與標準報告結構 |
 | `code-review-and-quality` | 合併前的多面向程式碼審閱，適用自己、其他 agent 或他人寫的變更，附效能與安全性 checklist |
@@ -72,7 +71,6 @@
 | 名稱 | 說明 |
 |------|------|
 | `strategic-compact` | 在邏輯斷點建議手動 context compaction，避免 auto-compaction 在不恰當時機觸發 |
-| `i-have-adhd` | ADHD 友善的輸出格式：先講下一步、多步驟編號、跨輪重述狀態、抑制離題。以 `/i-have-adhd` 開啟，說「stop adhd mode」關閉 |
 
 ### Agents
 
