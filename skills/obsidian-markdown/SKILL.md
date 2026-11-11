@@ -1,27 +1,24 @@
 ---
 name: obsidian-markdown
-description: Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, and other Obsidian-specific syntax. Use when working with .md files in Obsidian, or when the user mentions wikilinks, callouts, frontmatter, tags, embeds, or Obsidian notes. New files are written to `/Users/dannychou/danObsidian/ai-draft/` by default unless the user specifies a different output path.
+description: Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, and other Obsidian-specific syntax. Use when working with .md files in Obsidian, or when the user mentions wikilinks, callouts, frontmatter, tags, embeds, or Obsidian notes. When creating a new file without a user-specified output path, ask the user where to save it before writing.
 ---
 
 # Obsidian Flavored Markdown Skill
 
 This skill enables skills-compatible agents to create and edit valid Obsidian Flavored Markdown, including all Obsidian-specific syntax extensions.
 
-## Default Output Location
+## Output Location
 
-When this skill creates **new** Obsidian Markdown files (i.e. the user has not given an explicit destination path), write them to:
-
-```
-/Users/dannychou/danObsidian/ai-draft/
-```
+There is no default output directory: every user's Obsidian vault lives in a different place, so guessing a path risks writing notes outside the vault or into a non-existent directory.
 
 Rules:
 
-- **Default path**: `/Users/dannychou/danObsidian/ai-draft/<filename>.md`. This directory is the user's Obsidian "AI draft" inbox — putting new notes here lets the user review/triage them inside Obsidian before filing.
-- **User override wins**: if the user specifies any output path (absolute path, relative path, "save it to X", "put it in my inbox folder", "in this repo", etc.), use that path instead and do **not** fall back to the default.
-- **Editing existing files**: when the user asks to edit/update an existing `.md` file, edit it in place at its current location. Do not move or copy it into the default directory.
+- **Ask before writing new files**: when this skill creates a **new** Obsidian Markdown file and the user has not given a destination, ask the user for the target directory (e.g. their vault or inbox folder) before writing. Do not guess a path and do not fall back to the current working directory.
+- **User-specified path wins**: if the user specifies any output path (absolute path, relative path, "save it to X", "put it in my inbox folder", "in this repo", etc.), use that path without asking.
+- **Reuse within the conversation**: once the user has given a directory in this conversation, reuse it for later new notes unless they say otherwise.
+- **Editing existing files**: when the user asks to edit/update an existing `.md` file, edit it in place at its current location. Do not move or copy it elsewhere.
 - **Filename**: derive a short, descriptive `kebab-case` or `空格分隔` filename from the note's topic (Obsidian handles spaces fine). Use `.md` extension. Avoid characters that break wikilinks: `[ ] | # ^ \ /`.
-- **Don't create the directory**: it already exists. If a write fails because it's missing, surface the error to the user rather than silently creating directories elsewhere.
+- **Don't create the directory**: if a write fails because the target directory is missing, surface the error to the user rather than silently creating directories.
 
 ## Overview
 
