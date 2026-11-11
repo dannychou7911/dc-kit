@@ -1,0 +1,14 @@
+{
+  "name": "dc-tools",
+  "owner": {
+    "name": "Danny Chou"
+  },
+  "description": "Danny Chou's personal Claude Code plugins, free to share.",
+  "plugins": [
+    {
+      "name": "dc-kit",
+      "source": "./",
+      "description": "A personal Claude Code toolkit, free to share. Bundles curated skills, agents and commands."
+    }
+  ]
+}

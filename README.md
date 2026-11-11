@@ -1,12 +1,12 @@
-# sc-cc-plugin
+# dc-kit
 
-團隊共享的 Claude Code plugin 工具集，收錄經過實戰驗證的 skills、agents 與 slash commands，提升日常開發效率。
+個人使用、可自由分享的 Claude Code plugin 工具集，收錄經過實戰驗證的 skills、agents 與 slash commands，提升日常開發效率。
 
 ## 包含元件
 
 ### Skills
 
-主動觸發的技能，Claude Code 會依情境自動載入，也可用 `/sc-cc-plugin:<name>` 手動呼叫。
+主動觸發的技能，Claude Code 會依情境自動載入，也可用 `/dc-kit:<name>` 手動呼叫。
 
 #### 規格與文件
 
@@ -106,19 +106,41 @@
 
 ## 安裝方式
 
+### 從 marketplace 安裝
+
+```
+/plugin marketplace add dannychou7911/dc-kit
+/plugin install dc-kit@dc-tools
+```
+
+更新：`/plugin marketplace update dc-tools`。只有 `plugin.json` 的 `version` 變更時才會拿到新版，因此每次發佈都要調升版本號。
+
+### 在專案中預先啟用
+
+在專案的 `.claude/settings.json` 加入下列設定並 commit，成員信任該資料夾後即會自動註冊 marketplace 並啟用 plugin：
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "dc-tools": { "source": { "source": "github", "repo": "dannychou7911/dc-kit" } }
+  },
+  "enabledPlugins": { "dc-kit@dc-tools": true }
+}
+```
+
 ### 本地測試
 
 ```bash
-claude --plugin-dir /path/to/sc-cc-plugin
+claude --plugin-dir /path/to/dc-kit
 ```
 
 ### 驗證安裝
 
 啟動 Claude Code 後：
 
-- 輸入 `/`，確認看到帶有 `(sc-cc-plugin)` 標籤的 `/code-review-cmd`、`/commit`、`/review-mr`、`/rewrite-comments`、`/squash-branch`
+- 輸入 `/`，確認看到帶有 `(dc-kit)` 標籤的 `/code-review-cmd`、`/commit`、`/review-mr`、`/rewrite-comments`、`/squash-branch`
 - 輸入 `@`，確認看到 `frontend-code-reviewer`、`spec-scorer`、`spec-verifier` 三個 agent
-- 輸入 `/spec`，確認 skills（如 `/sc-cc-plugin:spec-recovery`）出現在清單中
+- 輸入 `/spec`，確認 skills（如 `/dc-kit:spec-recovery`）出現在清單中
 
 ## 使用範例
 

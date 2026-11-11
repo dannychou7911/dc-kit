@@ -1,7 +1,7 @@
 {
-  "name": "sc-cc-plugin",
-  "displayName": "My Daily Tools",
-  "description": "A shared Claude Code plugin toolkit for the team. Bundles curated skills and agents to boost everyday development workflows.",
+  "name": "dc-kit",
+  "displayName": "DC Kit",
+  "description": "A personal Claude Code toolkit, free to share. Bundles curated skills, agents and commands to boost everyday development workflows.",
   "version": "1.0.0",
   "author": {
     "name": "Danny Chou",

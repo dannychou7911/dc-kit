@@ -5,7 +5,7 @@ description: >-
   透過 GitLab MCP 發佈到指定專案的 Merge Request。使用者說「use gitlab mcp 將審閱結果回應到 web/game-launcher mr!50」
   「把 review 結果貼到 MR」「回覆審閱結果到 !50」「留言到 merge request」「post the review to MR」，
   或剛完成審閱後只丟出專案路徑與 MR 編號時，都應使用本 skill，即使沒有明說「整理」或「留言」。
-  不適用於：處理別人留給你的審閱意見（改用 sc-cc-plugin:review-mr）、建立或合併 MR、尚未完成審閱就要求發文。
+  不適用於：處理別人留給你的審閱意見（改用 dc-kit:review-mr）、建立或合併 MR、尚未完成審閱就要求發文。
 ---
 
 # MR Review Reply
